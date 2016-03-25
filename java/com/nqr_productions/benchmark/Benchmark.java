@@ -30,38 +30,8 @@ public class Benchmark extends Activity {
     private Integer floor;
     private Integer floor2;
     private Integer floor3;
+    private Integer code = 9999999;
     //private long tsLong;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_benchmark);
-        compute = (Button) findViewById(R.id.btn1);
-        result = (TextView) findViewById(R.id.textView2);
-        teststring = getResources().getString(R.string.teststring);
-
-
-    }
-
-
-    public void printout() {
-        compute.setText("BEGIN SEQUENCE...");
-        Long average = (tt2Shared + tt3Shared + ttShared) / 3;
-        Integer score = Math.round(average / 100000000);
-        result.setText("SHA-1 Time Taken: " + ttShared.toString() + "\n MD5 Time Taken: " + tt2Shared.toString() + "\n Brute Force Time Taken: " + tt3Shared.toString() + "\n \n Score: " + score.toString());
-
-    }
-
-    public void onBeginClick(View view) {
-
-        jobsdone = 0;
-        computeSHAHash(teststring);
-        computeMD5Hash(teststring);
-        compute.setText("CALCULATING...");
-        bruteForce();
-
-
-    }
 
     Handler handler = new Handler() {
         @Override
@@ -102,19 +72,55 @@ public class Benchmark extends Activity {
         }
     };
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_benchmark);
+        compute = (Button) findViewById(R.id.btn1);
+        result = (TextView) findViewById(R.id.textView2);
+        teststring = getResources().getString(R.string.teststring);
+
+
+    }
+
+
+    public void printout() {
+        compute.setText("BEGIN SEQUENCE...");
+        Long average = (tt2Shared + tt3Shared + ttShared) / 3;
+        Integer score = Math.round(average / 100000000);
+        result.setText("SHA-1 Time Taken: " + ttShared.toString() + "\n MD5 Time Taken: " + tt2Shared.toString() + "\n Brute Force Time Taken: " + tt3Shared.toString() + "\n \n Score: " + score.toString());
+
+    }
+
+    public void onBeginClick(View view) {
+
+        jobsdone = 0;
+        computeSHAHash(teststring);
+        computeMD5Hash(teststring);
+        compute.setText("CALCULATING...");
+        bruteForce();
+
+
+    }
+
+
+
     public void bruteForce() {
 
         Runnable r = new Runnable() {
             public void run() {
                 Long tsLong3 = System.nanoTime();
-                Integer code = 9999999;
+                Integer successfulcode = 0;
                 for (Integer i = 0; i < code; i++) {
+                    successfulcode = i;
                 }
                 Long ttLong3 = System.nanoTime() - tsLong3;
                 Message msg = Message.obtain();
                 msg.obj = ttLong3;
                 msg.setTarget(handler);
-                msg.sendToTarget();
+                if (successfulcode != 0) {
+                    msg.sendToTarget();
+                }
 
             }
         };
